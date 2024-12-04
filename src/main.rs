@@ -6,7 +6,7 @@ use std::io::{self, Write};
 use utils::check_if_exists;
 
 fn main() {
-    print!("Where is the file you want to compress?");
+    println!("Where is the file you want to compress?");
     io::stdout().flush().unwrap();
     let mut file_path = String::new();
     io::stdin().read_line(&mut file_path).unwrap();
