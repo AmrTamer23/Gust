@@ -3,6 +3,14 @@
 version = 3
 
 [[package]]
+name = "RZ"
+version = "0.1.0"
+dependencies = [
+ "flate2",
+ "tar",
+]
+
+[[package]]
 name = "adler2"
 version = "2.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -59,14 +67,6 @@ checksum = "c936bfdafb507ebbf50b8074c54fa31c5be9a1e7e5f467dd659697041407d07c"
 dependencies = [
  "crc32fast",
  "miniz_oxide",
-]
-
-[[package]]
-name = "gust"
-version = "0.1.0"
-dependencies = [
- "flate2",
- "tar",
 ]
 
 [[package]]
