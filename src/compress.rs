@@ -1,7 +1,7 @@
 use flate2::{write::GzEncoder, Compression};
 use std::{
     fs::File,
-    io::{Cursor, ErrorKind, Read, Result, Write},
+    io::{Cursor, Read, Result, Write},
     path::Path,
 };
 use tar::Builder;
@@ -51,9 +51,7 @@ fn add_folder_to_archive<W: Write>(
                 builder = add_folder_to_archive(path.to_str().unwrap(), builder)?;
             } else if path.is_file() {
                 let mut file = File::open(&path)?;
-                let relative_path = path
-                    .strip_prefix(folder_path)
-                    .map_err(|e| std::io::Error::new(ErrorKind::Other, e))?;
+                let relative_path = path.strip_prefix(folder_path).unwrap();
                 builder.append_file(relative_path.to_str().unwrap(), &mut file)?;
             }
         }
