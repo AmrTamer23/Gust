@@ -1,5 +1,5 @@
 [package]
-name = "RZ"
+name = "Shrinkr"
 version = "0.1.0"
 edition = "2021"
 description = "a compression tool for files and folders"
