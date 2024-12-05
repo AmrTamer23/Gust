@@ -14,7 +14,9 @@ fn main() {
         path = args[1].clone();
     } else {
         println!("Enter the folder or file you want to compress:");
-        io::stdin().read_line(&mut path).unwrap();
+        io::stdin()
+            .read_line(&mut path)
+            .unwrap_or_else(|err| panic!("Error reading input: {}", err));
         path = path.trim().to_string();
     }
 

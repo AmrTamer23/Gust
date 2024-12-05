@@ -26,7 +26,10 @@ pub fn compress_folder_as_gzip(folder_path: &str, output_file: &str) -> Result<(
 
     let tar_writer = add_folder_to_archive(folder_path, tar_writer)?;
 
-    let tar_data = tar_writer.into_inner()?.into_inner();
+    let tar_data = tar_writer
+        .into_inner()
+        .unwrap_or_else(|err| panic!("Error in adding folder to archive: {}", err))
+        .into_inner();
 
     let compressed_file = File::create(output_file)?;
     let mut encoder = GzEncoder::new(compressed_file, Compression::best());
@@ -35,7 +38,6 @@ pub fn compress_folder_as_gzip(folder_path: &str, output_file: &str) -> Result<(
 
     Ok(())
 }
-
 fn add_folder_to_archive<W: Write>(
     folder_path: &str,
     mut builder: Builder<W>,
@@ -48,11 +50,20 @@ fn add_folder_to_archive<W: Write>(
             let path = entry.path();
 
             if path.is_dir() {
-                builder = add_folder_to_archive(path.to_str().unwrap(), builder)?;
+                builder = add_folder_to_archive(
+                    path.to_str()
+                        .unwrap_or_else(|| panic!("Error in adding folder to archive")),
+                    builder,
+                )?;
             } else if path.is_file() {
                 let mut file = File::open(&path)?;
                 let relative_path = path.strip_prefix(folder_path).unwrap();
-                builder.append_file(relative_path.to_str().unwrap(), &mut file)?;
+                builder.append_file(
+                    relative_path
+                        .to_str()
+                        .unwrap_or_else(|| panic!("Error stripping prefix")),
+                    &mut file,
+                )?;
             }
         }
     }
