@@ -29,7 +29,7 @@ pub fn compress_folder_as_gzip(folder_path: &str, output_file: &str) -> Result<(
     let tar_data = tar_writer.into_inner()?.into_inner();
 
     let compressed_file = File::create(output_file)?;
-    let mut encoder = GzEncoder::new(compressed_file, Compression::default());
+    let mut encoder = GzEncoder::new(compressed_file, Compression::best());
     encoder.write_all(&tar_data)?;
     encoder.finish()?;
 
